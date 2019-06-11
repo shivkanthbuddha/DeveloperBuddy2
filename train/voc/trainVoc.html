@@ -16,7 +16,7 @@
     tf = yolo.tf
 
     // uri to weights file of last checkpoint
-    const modelCheckpoint = '/tmp/voc_e30_2800.weights'
+    const modelCheckpoint = 'initial_glorot_1_classes.weights'
 
     // continue training at epoch
     const startEpoch = 30
@@ -35,7 +35,7 @@
     window.trainSizes = [160, 224, 320, 416]
 
     // finish training after 'maxEpoch' epochs
-    window.maxEpoch = Infinity
+    window.maxEpoch =41
 
     const lossReporter = createLossReporter(trainSizes)
 
@@ -60,12 +60,33 @@
     }
 
     async function fetchTrainDataFilenames() {
-      return fetch('/voc_train_filenames').then(res => res.json())
+      return fetch('./voc_train_filenames').then(res => res.json())
     }
 
     async function load() {
       window.boxJsonUris = (await fetchTrainDataFilenames())
-      window.config = await fetchJson(`/tmp/voc_separable_conv_model_config.json`)
+      //window.config = await fetchJson(`/tmp/voc_separable_conv_model_config.json`)
+      window.config ={
+                      // use separable convolutions over regular convolutions
+                      "withSeparableConvs": true,
+                      // iou threshold for nonMaxSuppression
+                      "iouThreshold": 0.4,
+                      // instructions for how to determine anchors is given below
+                      "iouThreshold": 0.4,
+                      "anchors": [
+                        { "x": 1.08, "y": 1.19 },
+                        { "x": 3.42, "y": 4.41 },
+                        { "x": 6.63, "y": 11.38 },
+                        { "x": 9.42, "y": 5.11 },
+                        { "x": 16.62, "y": 10.52 }
+                      ],
+                      // whatever kind of objects you are training your object detector on
+                      "classes": ["hippo"],                      
+                      "objectScale": 5,
+                      "noObjectScale": 1,
+                      "coordScale": 1,
+                      "classScale": 1
+                    }
       window.net = new yolo.TinyYolov2Trainable(window.config, window.optimizer)
 
       const weights = await loadNetWeights(modelCheckpoint)
@@ -128,7 +149,7 @@
         }
       }
     }
-
+train()
   </script>
 </body>
 </html>
