@@ -7,3 +7,10 @@ weights_uncompressed
 weights_unused
 _tfjs-image-recognition-base
 tfjs-image-recognition-base
+examples/package-lock.json
+examples/package-lock.json
+train/package-lock.json
+examples/package-lock.json
+package-lock.json
+train/package-lock.json
+train/package-lock.json

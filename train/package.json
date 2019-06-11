@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node server.js"
+    "start": "node serveVoc.js"
   },
   "author": "justadudewhohacks",
   "license": "MIT",
