@@ -1,4 +1,4 @@
-require('./voc/.env')
+//require('./voc/.env')
 
 const express = require('express')
 const path = require('path')
@@ -15,13 +15,15 @@ app.use(express.static(path.join(__dirname, './js')))
 app.use(express.static(path.join(__dirname, '../examples/public')))
 app.use(express.static(path.join(__dirname, '../models')))
 app.use(express.static(path.join(__dirname, '../dist')))
+app.use(express.static(path.join(__dirname, './voc_train_filenames')))
 app.use(express.static(path.join(__dirname, './node_modules/file-saver')))
 
 app.get('/', (req, res) => res.redirect('/train'))
+app.get('/init', (req, res) => res.sendFile(path.join(public, 'initWeights.html')))
 app.get('/train', (req, res) => res.sendFile(path.join(public, 'trainVoc.html')))
 app.get('/verify', (req, res) => res.sendFile(path.join(public, 'verifyVoc.html')))
 
-const trainDataPath = path.resolve(process.env.TRAIN_DATA_PATH)
+const trainDataPath = path.resolve('./voc/voc_train_filenames')
 const imagesPath = path.join(trainDataPath, 'images')
 const groundTruthPath = path.join(trainDataPath, 'ground_truth')
 app.use(express.static(imagesPath))
